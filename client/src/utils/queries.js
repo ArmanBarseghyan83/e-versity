@@ -7,22 +7,18 @@ export const QUERY_ME = gql`
       email
       username
       isInstructor
-      myLearnig {
-        _id
-        title
-        images {
-          filename
-          url
-        }
-      }
-      savedCourses {
-        _id
-        title
-        images {
-          filename
-          url
-        }
-      }
+      isAdmin
+    }
+  }
+`;
+
+export const ALL_USERS = gql`
+  query users {
+    users {
+      _id
+      username
+      isAdmin
+      isInstructor
     }
   }
 `;
