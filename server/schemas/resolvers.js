@@ -66,6 +66,17 @@ const resolvers = {
       return { token, user };
     },
 
+    deleteUser: async (parent, { _id }) => {
+      const user = await User.findByIdAndDelete(_id);
+
+      const course = await Course.findOneAndDelete({ user: user._id });
+      course?.images.forEach(async (image) => {
+        await cloudinary.uploader.destroy(image.filename);
+      });
+
+      return user;
+    },
+
     addCourse: async (parent, args, context) => {
       return await Course.create({ ...args, user: context.user._id });
     },
@@ -114,6 +125,34 @@ const resolvers = {
       );
 
       return updatedCourse;
+    },
+
+    editAdmin: async (parent, { _id }) => {
+      const user = await User.findById(_id);
+
+      if (user.isAdmin) {
+        user.isAdmin = false;
+        await user.save();
+      } else {
+        user.isAdmin = true;
+        await user.save();
+      }
+
+      return user;
+    },
+
+    editInstructor: async (parent, { _id }) => {
+      const user = await User.findById(_id);
+
+      if (user.isInstructor) {
+        user.isInstructor = false;
+        await user.save();
+      } else {
+        user.isInstructor = true;
+        await user.save();
+      }
+
+      return user;
     },
   },
 };
