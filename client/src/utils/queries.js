@@ -7,6 +7,7 @@ export const QUERY_ME = gql`
       email
       username
       isInstructor
+      isAdmin
       myLearnig {
         _id
         title
@@ -23,6 +24,17 @@ export const QUERY_ME = gql`
           url
         }
       }
+    }
+  }
+`;
+
+export const ALL_USERS = gql`
+  query users {
+    users {
+      _id
+      username
+      isAdmin
+      isInstructor
     }
   }
 `;

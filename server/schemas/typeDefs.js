@@ -80,6 +80,9 @@ const typeDefs = `
       description: String
       reviews: [ReviewInput]
       price: Float): Course
+      editAdmin(_id: ID!): User  
+    editInstructor(_id: ID!): User 
+    deleteUser(_id: ID!): User
   }
 `;
 
