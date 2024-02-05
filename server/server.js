@@ -8,12 +8,16 @@ const path = require('path');
 const { authMiddleware } = require('./utils/auth');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
+const multer = require('multer');
+const { storage } = require('./cloudinary/index')
 
 const app = express();
 app.use(cors());
 
 const PORT = process.env.PORT || 3001;
 
+const upload = multer({ storage });
+const uploadMultipleImages = upload.array('images');
 
 const server = new ApolloServer({
   typeDefs,
@@ -26,6 +30,25 @@ const startApolloServer = async () => {
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
+
+  app.post('/upload', (req, res) => {
+    uploadMultipleImages(req, res, function (err) {
+      
+      if (err) {
+        res.status(400).send({ message: err.message });
+      }
+  
+      const images = req.files.map((f) => ({
+        url: f.path,
+        filename: f.filename,
+      }));
+  
+      res.status(200).send({
+        message: 'Image uploaded successfully',
+        images
+      });
+    });
+  });
 
   app.use(
     '/graphql',

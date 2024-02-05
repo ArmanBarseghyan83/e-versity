@@ -1,9 +1,11 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Spin } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useDispatch } from 'react-redux';
 import { ADD_USER } from '../utils/mutations';
 import { setUserInfo } from '../slices/authSlice';
+import { toast } from 'react-toastify';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const Signup = () => {
   const [addUser, { error, loading }] = useMutation(ADD_USER);
@@ -17,10 +19,11 @@ const Signup = () => {
         variables: { ...values },
       });
 
+      toast.success('Successfully created')
       dispatch(setUserInfo(data.addUser.token));
       navigate('/');
     } catch (err) {
-      console.error(err);
+      toast.error('User already exists')
     }
   };
 
@@ -37,6 +40,7 @@ const Signup = () => {
           padding: '1rem',
         }}
         onFinish={handleFormSubmit}
+        layout="vertical"
       >
         <Form.Item
           label="Username"
@@ -84,6 +88,20 @@ const Signup = () => {
         <Form.Item>
           <Button type="primary" htmlType="submit">
             Submit
+            {loading && (
+            <Spin
+              indicator={
+                <LoadingOutlined
+                  style={{
+                    fontSize: 16,
+                    color: 'white',
+                    marginLeft: '.5rem',
+                  }}
+                  spin
+                />
+              }
+            />
+          )}
           </Button>
         </Form.Item>
         <div>

@@ -56,3 +56,26 @@ export const EDIT_ADMIN = gql`
   }
 `;
 
+export const ADD_COURSE = gql`
+  mutation addCourse(
+    $title: String!
+    $description: String!
+    $price: Float!
+    $images: [ImageInput]
+  ) {
+    addCourse(
+      title: $title
+      description: $description
+      price: $price
+      images: $images
+    ) {
+      title
+      description
+      images {
+        filename
+        url
+      }
+    }
+  }
+`;
+

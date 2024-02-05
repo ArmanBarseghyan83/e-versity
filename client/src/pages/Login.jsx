@@ -1,14 +1,16 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Spin } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
-import { setUserInfo } from '../slices/authSlice'
+import { setUserInfo } from '../slices/authSlice';
+import { toast } from 'react-toastify';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const Login = () => {
-  const [login, { error }] = useMutation(LOGIN_USER);
+  const [login, { error, loading }] = useMutation(LOGIN_USER);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleFormSubmit = async (values) => {
@@ -16,11 +18,12 @@ const Login = () => {
       const { data } = await login({
         variables: { ...values },
       });
-     
-      dispatch(setUserInfo(data.login.token))
-      navigate('/')
+
+      toast.success('Successfully logged in');
+      dispatch(setUserInfo(data.login.token));
+      navigate('/');
     } catch (err) {
-      console.error(err);
+      toast.error('No records found');
     }
   };
 
@@ -36,6 +39,7 @@ const Login = () => {
         padding: '1rem',
       }}
       onFinish={handleFormSubmit}
+      layout="vertical"
     >
       <Form.Item
         label="Email"
@@ -67,9 +71,23 @@ const Login = () => {
         <Input.Password />
       </Form.Item>
 
-      <Form.Item >
+      <Form.Item>
         <Button type="primary" htmlType="submit">
           Submit
+          {loading && (
+            <Spin
+              indicator={
+                <LoadingOutlined
+                  style={{
+                    fontSize: 16,
+                    color: 'white',
+                    marginLeft: '.5rem',
+                  }}
+                  spin
+                />
+              }
+            />
+          )}
         </Button>
       </Form.Item>
 

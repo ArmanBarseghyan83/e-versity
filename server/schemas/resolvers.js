@@ -78,7 +78,14 @@ const resolvers = {
     },
 
     addCourse: async (parent, args, context) => {
-      return await Course.create({ ...args, user: context.user._id });
+      const course = await Course.create({ ...args, user: context.user._id });
+
+      if (!course.images.length) {
+        course.images.push({ filename: 'sample', url: '/sample.jpg' });
+        await course.save();
+      }
+
+      return course;
     },
 
     saveCourse: async (parent, args, context) => {
