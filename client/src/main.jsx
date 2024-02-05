@@ -13,6 +13,9 @@ import MyCourses from './pages/MyCourses.jsx';
 import AllCourses from './pages/AllCourses.jsx';
 import AllUsers from './pages/AllUsers.jsx';
 import EditCourse from './pages/EditCourse.jsx';
+import AdminRoute from './components/AdminRoute.jsx';
+import InstructorRoute from './components/InstructorRoute.jsx';
+import AuthUserRoute from './components/AuthUserRoute.jsx';
 
 const router = createBrowserRouter([
   {
@@ -33,35 +36,51 @@ const router = createBrowserRouter([
         element: <Signup />,
       },
       {
-        path: '/cart',
-        element: <Cart />,
-      },
-      {
-        path: '/user-edit/:id',
-        element: <UserEdit />,
-      },
-      {
-        path: '/create-course',
-        element: <CreateCourse />,
-      },
-      {
-        path: '/my-courses',
-        element: <MyCourses />,
-      },
-      {
-        path: '/all-courses',
-        element: <AllCourses />,
-      },
-      {
-        path: '/all-users',
-        element: <AllUsers />,
-      },
-      {
         path: '/course/:id',
         element: <Course />,
-      }, {
-        path: '/course/edit/:id',
-        element: <EditCourse/>
+      }, 
+      {
+        element: <AdminRoute/>,
+        children: [
+          {
+            path: '/all-users',
+            element: <AllUsers />,
+          },
+          {
+            path: '/all-courses',
+            element: <AllCourses />,
+          },
+        ]
+      },
+      {
+        element: <InstructorRoute/>,
+        children: [
+          {
+            path: '/create-course',
+            element: <CreateCourse />,
+          },
+          {
+            path: '/my-courses',
+            element: <MyCourses />,
+          },
+          {
+            path: '/course/edit/:id',
+            element: <EditCourse/>
+          }
+        ]
+      },
+      {
+        element: <AuthUserRoute/>,
+        children: [
+          {
+            path: '/cart',
+            element: <Cart />,
+          },
+          {
+            path: '/user-edit/:id',
+            element: <UserEdit />,
+          },
+        ]
       }
     ],
   },
