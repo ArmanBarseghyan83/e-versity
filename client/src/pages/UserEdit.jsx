@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { EDIT_USER } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
+import { LoadingOutlined } from '@ant-design/icons';
+import { toast } from 'react-toastify';
 
 const UserEdit = () => {
   const { data, error, loading, refetch } = useQuery(QUERY_ME);
-  const [editUser] = useMutation(EDIT_USER);
+  const [editUser, { loading: loadingEdit }] = useMutation(EDIT_USER);
 
   const navigate = useNavigate();
 
@@ -16,13 +18,14 @@ const UserEdit = () => {
         const { data } = await editUser({
           variables: { ...values },
         });
+        toast.success('Successfully updated')
         refetch();
         navigate('/');
       } catch (err) {
         console.error(err);
       }
     } else {
-      console.log('must mutch');
+      toast.error('Something went wrong');
     }
   };
 
@@ -56,8 +59,18 @@ const UserEdit = () => {
           username: data?.me.username,
           email: data?.me.email,
         }}
+        layout="vertical"
       >
-        <Form.Item label="Username" name="username">
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your username!',
+            },
+          ]}
+        >
           <Input />
         </Form.Item>
 
@@ -65,6 +78,10 @@ const UserEdit = () => {
           label="Email"
           name="email"
           rules={[
+            {
+              required: true,
+              message: 'Please input your email!',
+            },
             {
               type: 'email',
               message: 'Please enter a valid email address!',
@@ -85,6 +102,20 @@ const UserEdit = () => {
         <Form.Item>
           <Button type="primary" htmlType="submit">
             Edit
+            {loadingEdit && (
+              <Spin
+                indicator={
+                  <LoadingOutlined
+                    style={{
+                      fontSize: 16,
+                      color: 'white',
+                      marginLeft: '.5rem',
+                    }}
+                    spin
+                  />
+                }
+              />
+            )}
           </Button>
         </Form.Item>
       </Form>
