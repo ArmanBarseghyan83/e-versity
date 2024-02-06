@@ -14,13 +14,16 @@ import { ALL_USERS } from '../utils/queries';
 const { Column } = Table;
 
 const AllUsers = () => {
+  // Queries and mutations to use apollo client
   const { data, refetch, loading } = useQuery(ALL_USERS);
   const [editAdmin] = useMutation(EDIT_ADMIN);
   const [editInstructor] = useMutation(EDIT_INSTRUCTOR);
   const [deleteUser] = useMutation(DELETE_USER);
 
+  // Get the items from the global state
   const { userId } = useSelector((state) => state.auth);
 
+  // Map over the users to create the data for the table
   const tableData = data?.users.map((user) => ({
     key: user._id,
     username: user.username,
@@ -48,6 +51,7 @@ const AllUsers = () => {
 
   refetch();
 
+  // Before rendering the main content, show spinner while loading.
   if (loading) {
     return (
       <>
@@ -116,9 +120,9 @@ const AllUsers = () => {
           render={(record) => (
             <>
               {record.key === userId ? (
-                  <Link role="button" disabled>
-                    <DeleteFilled />
-                  </Link>
+                <Link role="button" disabled>
+                  <DeleteFilled />
+                </Link>
               ) : (
                 <Popconfirm
                   title="Delete the user"
@@ -127,9 +131,7 @@ const AllUsers = () => {
                   cancelText="No"
                   onConfirm={() => deleteUserHandler(record.key)}
                 >
-                  <Link
-                    role="button"
-                  >
+                  <Link role="button">
                     <DeleteFilled />
                   </Link>
                 </Popconfirm>

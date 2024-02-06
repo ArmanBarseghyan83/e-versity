@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { LoadingOutlined } from '@ant-design/icons';
 
 const CreateCourse = () => {
+  // Mutation to use apollo client
   const [addCourse, { error, loading }] = useMutation(ADD_COURSE);
 
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const CreateCourse = () => {
   const [images, setImages] = useState({});
 
   const handleFormSubmit = async (values) => {
+    // Get the data from file upload and save to the new FormData object
     const formData = new FormData();
 
     for (let i = 0; i < images?.length; i++) {
@@ -21,6 +23,7 @@ const CreateCourse = () => {
     }
 
     try {
+      // Send formData to the backend to save in the cloudinary
       const res = await fetch(
         process.env.NODE_ENV === 'development'
           ? 'http://localhost:3001/upload'
@@ -33,8 +36,9 @@ const CreateCourse = () => {
 
       const imageData = await res.json();
 
+      // Throw an error if the image is not uploaded
       if (!imageData.images) {
-        throw new Error('Image size exceeds the limit')
+        throw new Error('Image size exceeds the limit');
       }
 
       const { data } = await addCourse({

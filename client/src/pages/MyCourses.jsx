@@ -8,10 +8,12 @@ import { MY_COURSES } from '../utils/queries';
 const { Column } = Table;
 
 const MyCourses = () => {
+  // Queries and mutations to use apollo client
   const { data, error, loading, refetch } = useQuery(MY_COURSES);
   const [deleteCourse, { error: deleteError, loading: deleteLoading }] =
     useMutation(DELETE_COURSE);
 
+  // Map over the courses to create the data for the table
   const tableData = data?.myCourses.map((item) => ({
     key: item?._id,
     title: <Link to={`/course/${item?._id}`}>{item?.title}</Link>,
@@ -28,6 +30,7 @@ const MyCourses = () => {
     image: item?.images[0]?.url || '/sample.jpg',
   }));
 
+  // Delete the course
   const deleteCourseHandler = async (id) => {
     await deleteCourse({
       variables: { id },
@@ -38,6 +41,7 @@ const MyCourses = () => {
 
   refetch();
 
+  // Before rendering the main content, show spinner while loading.
   if (loading) {
     return (
       <>

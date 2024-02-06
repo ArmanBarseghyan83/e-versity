@@ -12,14 +12,16 @@ const EditCourse = () => {
   const location = useLocation();
   const _id = location.pathname.split('/').pop();
 
+  // Query to use apollo client
   const { data, loading, refetch } = useQuery(COURSE, {
     variables: { courseId: _id },
   });
-
-  const [editCourse, { error, loading: loadingEdit }] = useMutation(EDIT_COURSE);
+  const [editCourse, { error, loading: loadingEdit }] =
+    useMutation(EDIT_COURSE);
 
   const navigate = useNavigate();
 
+  // Saved checked images to the stateful veriable
   const [images, setImages] = useState({});
   const [deleteImages, setDeleteImages] = useState([]);
 
@@ -31,6 +33,7 @@ const EditCourse = () => {
   };
 
   const handleFormSubmit = async (values) => {
+    // Get the data from file upload and save to the new FormData object
     const formData = new FormData();
 
     for (let i = 0; i < images.length; i++) {
@@ -38,6 +41,7 @@ const EditCourse = () => {
     }
 
     try {
+      // Send formData to the backend to save in the cloudinary
       const res = await fetch(
         process.env.NODE_ENV === 'development'
           ? 'http://localhost:3001/upload'
@@ -50,8 +54,9 @@ const EditCourse = () => {
 
       const imageData = await res.json();
 
+      // Throw an error if the image is not uploaded
       if (!imageData.images) {
-        throw new Error('Image size exceeds the limit')
+        throw new Error('Image size exceeds the limit');
       }
 
       const { data } = await editCourse({
@@ -63,14 +68,15 @@ const EditCourse = () => {
         },
       });
 
-      toast.success('Successfully updated')
+      toast.success('Successfully updated');
       refetch();
-      navigate('/my-courses')
+      navigate('/my-courses');
     } catch (err) {
       toast.error(err?.message || 'Something went wrong');
     }
   };
 
+  // Before rendering the main content, show spinner while loading.
   if (loading) {
     return (
       <>
@@ -147,7 +153,7 @@ const EditCourse = () => {
             multiple
           />
         </Form.Item>
-        <div style={{marginBottom: '1rem'}}>Select images to delete</div>
+        <div style={{ marginBottom: '1rem' }}>Select images to delete</div>
         <Row>
           {data?.course?.images.map((image, i) => (
             <div key={image.filename}>
@@ -156,9 +162,12 @@ const EditCourse = () => {
                 type="checkbox"
                 value={image.filename}
                 onChange={handleCheckboxChange}
-                style={{position: 'absolute'}}
+                style={{ position: 'absolute' }}
               />
-              <label style={{ cursor: 'pointer', marginRight: '.5rem' }} htmlFor={i}>
+              <label
+                style={{ cursor: 'pointer', marginRight: '.5rem' }}
+                htmlFor={i}
+              >
                 <img src={image?.url || ''} style={{ width: '6rem' }} />
               </label>
             </div>
