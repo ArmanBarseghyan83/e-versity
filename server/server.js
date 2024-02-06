@@ -9,7 +9,7 @@ const { authMiddleware } = require('./utils/auth');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const multer = require('multer');
-const { storage } = require('./cloudinary/index')
+const { storage } = require('./cloudinary/index');
 
 const app = express();
 app.use(cors());
@@ -33,19 +33,28 @@ const startApolloServer = async () => {
 
   app.post('/upload', (req, res) => {
     uploadMultipleImages(req, res, function (err) {
-      
       if (err) {
-        res.status(400).send({ message: err.message });
+        if (
+          err instanceof multer.MulterError &&
+          err.code === 'LIMIT_FILE_SIZE'
+        ) {
+          // Handle file size limit error
+          return res
+            .status(400)
+            .send({ message: 'Image size exceeds the limit' });
+        }
+        // Handle other errors
+        return res.status(400).send({ message: err.message });
       }
-  
+
       const images = req.files.map((f) => ({
         url: f.path,
         filename: f.filename,
       }));
-  
+
       res.status(200).send({
         message: 'Image uploaded successfully',
-        images
+        images,
       });
     });
   });
