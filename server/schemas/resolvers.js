@@ -1,5 +1,6 @@
 const { User, Course } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
+const { cloudinary } = require('../cloudinary');
 
 const resolvers = {
   Query: {
@@ -113,7 +114,9 @@ const resolvers = {
 
     deleteCourse: async (parent, args, context) => {
       const course = await Course.findByIdAndDelete({ _id: args._id });
-
+      course?.images.forEach(async (image) => {
+        await cloudinary.uploader.destroy(image?.filename);
+      });
       return course;
     },
 

@@ -38,3 +38,18 @@ export const ALL_USERS = gql`
     }
   }
 `;
+
+export const MY_COURSES = gql`
+  query myCourses {
+    myCourses {
+      _id
+      title
+      price
+      isApproved
+      images {
+        filename
+        url
+      }
+    }
+  }
+`;
