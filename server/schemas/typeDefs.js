@@ -31,7 +31,7 @@ const typeDefs = `
   }
 
   type Review {
-    user: ID
+    user: User
     rating: Float
     comment: String
   }
@@ -55,6 +55,7 @@ const typeDefs = `
     course(courseId: ID!): Course
     approvedCourses: [Course]
     myCourses: [Course]
+    allCourses: [Course]
   }
 
   type Mutation {
@@ -80,9 +81,11 @@ const typeDefs = `
       description: String
       reviews: [ReviewInput]
       price: Float): Course
-      editAdmin(_id: ID!): User  
+    approveCourse(_id: ID!): Course
+    editAdmin(_id: ID!): User  
     editInstructor(_id: ID!): User 
     deleteUser(_id: ID!): User
+    createReview(rating: Float! comment: String! courseId: ID!): Course
   }
 `;
 

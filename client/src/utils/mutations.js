@@ -87,3 +87,24 @@ export const DELETE_COURSE = gql`
   }
 `;
 
+export const EDIT_COURSE = gql`
+  mutation editCourse(
+    $id: ID!
+    $title: String
+    $images: [ImageInput]
+    $description: String
+    $deleteImages: [String]
+  ) {
+    editCourse(
+      _id: $id
+      title: $title
+      images: $images
+      description: $description
+      deleteImages: $deleteImages
+    ) {
+      _id
+      title
+    }
+  }
+`;
+

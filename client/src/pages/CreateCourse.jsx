@@ -33,6 +33,10 @@ const CreateCourse = () => {
 
       const imageData = await res.json();
 
+      if (!imageData.images) {
+        throw new Error('Image size exceeds the limit')
+      }
+
       const { data } = await addCourse({
         variables: { ...values, images: imageData?.images },
       });
@@ -40,7 +44,7 @@ const CreateCourse = () => {
       toast.success('Successfully created');
       navigate('/my-courses');
     } catch (err) {
-      toast.error('Something went wrong');
+      toast.error(err?.message || 'Something went wrong');
     }
   };
 

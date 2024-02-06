@@ -119,7 +119,7 @@ const Navbar = () => {
           ],
         },
         {
-          label: 'My Learnig',
+          label: 'My Learning',
           key: 'SubMenu2',
           icon: (
             <Badge count={7} offset={[6, -4]} size="small">
@@ -173,7 +173,7 @@ const Navbar = () => {
             {
               label: (
                 <Link to={`/user-edit/${userId}`} rel="noopener noreferrer">
-                  User Eidt
+                  User Edit
                 </Link>
               ),
               key: 'user-edit',

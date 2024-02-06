@@ -18,7 +18,10 @@ const resolvers = {
     },
 
     course: async (parent, { courseId }) => {
-      return await Course.findById(courseId).populate('user');
+      return await Course.findById(courseId).populate('user').populate({
+        path: 'reviews',
+        populate: 'user'
+      });
     },
 
     approvedCourses: async () => {
@@ -26,7 +29,13 @@ const resolvers = {
     },
 
     myCourses: async (parent, ags, context) => {
-      return await Course.find({ user: context.user._id }).populate('user');
+      return await Course.find({ user: context.user._id })
+        .populate('user')
+        .sort({ updatedAt: -1, _id: 1 });
+    },
+
+    allCourses: async () => {
+      return await Course.find().populate('user');
     },
   },
 
@@ -134,7 +143,45 @@ const resolvers = {
         { new: true }
       );
 
+      if (args.deleteImages.length) {
+        updatedCourse.images = updatedCourse.images.filter(
+          (image) => !args.deleteImages.includes(image.filename)
+        );
+
+        for (let filename of args.deleteImages) {
+          await cloudinary.uploader.destroy(filename);
+        }
+
+        await updatedCourse.save();
+      }
+
+      if (!updatedCourse.images.length) {
+        updatedCourse.images.push({ filename: 'sample', url: '/sample.jpg' });
+        await updatedCourse.save();
+      }
+
+      if (updatedCourse.images.length > 1) {
+        updatedCourse.images = updatedCourse.images.filter(
+          (item) => item.filename !== 'sample'
+        );
+        await updatedCourse.save();
+      }
+
       return updatedCourse;
+    },
+
+    approveCourse: async (parent, { _id }) => {
+      const course = await Course.findById(_id);
+
+      if (course.isApproved) {
+        course.isApproved = false;
+        await course.save();
+      } else {
+        course.isApproved = true;
+        await course.save();
+      }
+
+      return course;
     },
 
     editAdmin: async (parent, { _id }) => {
@@ -163,6 +210,23 @@ const resolvers = {
       }
 
       return user;
+    },
+
+    createReview: async (parent, { rating, comment, courseId }, context) => {
+      const course = await Course.findById(courseId);
+
+      const alreadyReviewed = course.reviews.find(
+        (r) => r.user.toString() === context.user._id.toString()
+      );
+
+      if (alreadyReviewed) {
+        throw new Error('Course already reviewed');
+      }
+
+      course.reviews.push({ rating, comment, user: context.user._id });
+      await course.save();
+
+      return course
     },
   },
 };

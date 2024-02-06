@@ -53,3 +53,24 @@ export const MY_COURSES = gql`
     }
   }
 `;
+
+export const COURSE = gql`
+  query course($courseId: ID!) {
+    course(courseId: $courseId) {
+      title
+      description
+      price
+      reviews {
+        user {
+          username
+        }
+        comment
+        rating
+      } 
+      images {
+        filename
+        url
+      }
+    }
+  }
+`;
