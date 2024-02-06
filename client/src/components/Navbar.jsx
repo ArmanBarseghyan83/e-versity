@@ -16,8 +16,10 @@ import { Menu, Badge } from 'antd';
 import { QUERY_ME } from '../utils/queries';
 
 const Navbar = () => {
+  // Query to use apollo client
   const { data, loading, error, refetch } = useQuery(QUERY_ME);
 
+  // Get the items from the global state
   const { isTokenExpired, userId } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -27,6 +29,7 @@ const Navbar = () => {
     setCurrent(e.key);
   };
 
+  // Render this links only if the user is admin
   const adminUserNav = data?.me?.isAdmin
     ? [
         {
@@ -48,6 +51,7 @@ const Navbar = () => {
       ]
     : [];
 
+  // Render this links only if the user is instructor
   const instructorUserNav = data?.me?.isInstructor
     ? [
         {
@@ -69,6 +73,7 @@ const Navbar = () => {
       ]
     : [];
 
+  // Render this links only if the user is logged in
   const authorizedUzerNav = !isTokenExpired
     ? [
         {
@@ -230,6 +235,7 @@ const Navbar = () => {
     },
   ];
 
+  // If the token is expired remove the id_token from local storage, which will logout the user
   useEffect(() => {
     if (isTokenExpired) {
       localStorage.removeItem('id_token');

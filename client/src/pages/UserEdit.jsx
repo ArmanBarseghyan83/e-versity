@@ -7,18 +7,20 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 
 const UserEdit = () => {
+  // Queries and mutations to use apollo client
   const { data, error, loading, refetch } = useQuery(QUERY_ME);
   const [editUser, { loading: loadingEdit }] = useMutation(EDIT_USER);
 
   const navigate = useNavigate();
 
+  // Update the user info
   const handleFormSubmit = async (values) => {
     if (values.password == values.confirmPassword) {
       try {
         const { data } = await editUser({
           variables: { ...values },
         });
-        toast.success('Successfully updated')
+        toast.success('Successfully updated');
         refetch();
         navigate('/');
       } catch (err) {
@@ -29,6 +31,7 @@ const UserEdit = () => {
     }
   };
 
+  // Before rendering the main content, show spinner while loading.
   if (loading) {
     return (
       <>

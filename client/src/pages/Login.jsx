@@ -8,11 +8,13 @@ import { toast } from 'react-toastify';
 import { LoadingOutlined } from '@ant-design/icons';
 
 const Login = () => {
+  // Mutation to use apollo client
   const [login, { error, loading }] = useMutation(LOGIN_USER);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Login the user
   const handleFormSubmit = async (values) => {
     try {
       const { data } = await login({

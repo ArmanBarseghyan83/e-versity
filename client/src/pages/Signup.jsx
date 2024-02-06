@@ -8,22 +8,24 @@ import { toast } from 'react-toastify';
 import { LoadingOutlined } from '@ant-design/icons';
 
 const Signup = () => {
+  // Mutation to use apollo client
   const [addUser, { error, loading }] = useMutation(ADD_USER);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Sign up the user
   const handleFormSubmit = async (values) => {
     try {
       const { data } = await addUser({
         variables: { ...values },
       });
 
-      toast.success('Successfully created')
+      toast.success('Successfully created');
       dispatch(setUserInfo(data.addUser.token));
       navigate('/');
     } catch (err) {
-      toast.error('User already exists')
+      toast.error('User already exists');
     }
   };
 
@@ -89,19 +91,19 @@ const Signup = () => {
           <Button type="primary" htmlType="submit">
             Submit
             {loading && (
-            <Spin
-              indicator={
-                <LoadingOutlined
-                  style={{
-                    fontSize: 16,
-                    color: 'white',
-                    marginLeft: '.5rem',
-                  }}
-                  spin
-                />
-              }
-            />
-          )}
+              <Spin
+                indicator={
+                  <LoadingOutlined
+                    style={{
+                      fontSize: 16,
+                      color: 'white',
+                      marginLeft: '.5rem',
+                    }}
+                    spin
+                  />
+                }
+              />
+            )}
           </Button>
         </Form.Item>
         <div>
