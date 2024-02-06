@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { Table, Button, Spin } from 'antd';
+import { Table, Button, Spin, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
@@ -116,16 +116,23 @@ const AllUsers = () => {
           render={(record) => (
             <>
               {record.key === userId ? (
-                <Link role="button" disabled>
-                  <DeleteFilled />
-                </Link>
+                  <Link role="button" disabled>
+                    <DeleteFilled />
+                  </Link>
               ) : (
-                <Link
-                  role="button"
-                  onClick={() => deleteUserHandler(record.key)}
+                <Popconfirm
+                  title="Delete the user"
+                  description="Are you sure to delete this user?"
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => deleteUserHandler(record.key)}
                 >
-                  <DeleteFilled />
-                </Link>
+                  <Link
+                    role="button"
+                  >
+                    <DeleteFilled />
+                  </Link>
+                </Popconfirm>
               )}
             </>
           )}
