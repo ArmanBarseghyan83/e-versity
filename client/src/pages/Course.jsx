@@ -2,23 +2,20 @@ import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { Rate, Form, Input, Button, Spin, Card, Row, Col } from 'antd';
 import { useQuery } from '@apollo/client';
-// import { CREATE_REVIEW, SAVE_COURSE, UNSAVE_COURSE } from '../utils/mutations';
 import { COURSE_PAGE } from './../utils/queries';
-// import CommentList from '../components/CommentList';
 import ImageCarousel from '../components/ImageCarousel';
-import { toast } from 'react-toastify';
-import { LoadingOutlined } from '@ant-design/icons';
+
 
 const { TextArea } = Input;
  
 
-
 const Course = () => {
-  const courseId = useParams('_id');
  const [value, setValue] = useState(3);
+  const courseId = useParams().id;
   const { data, refetch, loading } = useQuery(COURSE_PAGE, {
     variables: { courseId },
   });
+
 console.log(data?.course);
   if (loading) {
     return (
@@ -36,8 +33,6 @@ console.log(data?.course);
   return (
     <Card>
       <Row>
-        <h2>{data?.course.title}</h2>
-        
         <Col style={{ padding: '0 1rem 1rem 1rem' }} span={24} md={12}>
           <h2 style={{ margin: '1rem 0' }}>{data?.course.title}</h2>
           <div>
@@ -73,8 +68,6 @@ console.log(data?.course);
             </Button>
           </Form.Item>        
           </Col> 
-        
-        
         <Col style={{ padding: '1rem 1rem  0 1rem' }} span={24} md={12}>
           <h2>Reviews</h2>
           <h2>** Comment List Goes Here**</h2>
