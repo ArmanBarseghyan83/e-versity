@@ -1,4 +1,4 @@
-import { Button, Form, Input, Spin } from 'antd';
+import { Button, Form, Input, Spin, Card } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useDispatch } from 'react-redux';
@@ -22,7 +22,7 @@ const Signup = () => {
       });
 
       toast.success('Successfully created');
-      dispatch(setUserInfo(data.addUser.token));
+      dispatch(setUserInfo(data?.addUser?.token));
       navigate('/');
     } catch (err) {
       toast.error('User already exists');
@@ -30,20 +30,22 @@ const Signup = () => {
   };
 
   return (
-    <>
+    <Card
+      style={{
+        maxWidth: 800,
+        margin: 'auto',
+        padding: '1rem',
+      }}
+    >
       <Form
         name="basic"
         labelCol={{
           span: 4,
         }}
-        style={{
-          maxWidth: 800,
-          margin: 'auto',
-          padding: '1rem',
-        }}
         onFinish={handleFormSubmit}
         layout="vertical"
       >
+        <h2 style={{ fontSize: '1.7rem', marginBottom: '1rem' }}>Sign Up</h2>
         <Form.Item
           label="Username"
           name="username"
@@ -110,7 +112,7 @@ const Signup = () => {
           Or Login <Link to={'/login'}>here</Link>
         </div>
       </Form>
-    </>
+    </Card>
   );
 };
 export default Signup;

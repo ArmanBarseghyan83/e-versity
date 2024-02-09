@@ -1,4 +1,4 @@
-import { Button, Form, Input, Spin } from 'antd';
+import { Button, Form, Input, Spin, Card } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { EDIT_USER } from '../utils/mutations';
@@ -15,19 +15,18 @@ const UserEdit = () => {
 
   // Update the user info
   const handleFormSubmit = async (values) => {
-    if (values.password == values.confirmPassword) {
+    if (values?.password == values?.confirmPassword) {
       try {
         const { data } = await editUser({
           variables: { ...values },
         });
-        toast.success('Successfully updated');
         refetch();
         navigate('/');
       } catch (err) {
-        console.error(err);
+        toast.error('Something went wrong');
       }
     } else {
-      toast.error('Something went wrong');
+      toast.error('Passwords must match');
     }
   };
 
@@ -45,25 +44,26 @@ const UserEdit = () => {
   }
 
   return (
-    <>
-      <h2>Edit User</h2>
+    <Card
+      style={{
+        maxWidth: 900,
+        margin: 'auto',
+        padding: '1rem',
+      }}
+    >
       <Form
         name="basic"
         labelCol={{
           span: 4,
         }}
-        style={{
-          maxWidth: 800,
-          margin: 'auto',
-          padding: '1rem',
-        }}
         onFinish={handleFormSubmit}
         initialValues={{
-          username: data?.me.username,
-          email: data?.me.email,
+          username: data?.me?.username,
+          email: data?.me?.email,
         }}
         layout="vertical"
       >
+        <h2 style={{fontSize: '1.7rem', marginBottom: '1rem'}}>Edit User</h2>
         <Form.Item
           label="Username"
           name="username"
@@ -122,7 +122,7 @@ const UserEdit = () => {
           </Button>
         </Form.Item>
       </Form>
-    </>
+    </Card>
   );
 };
 
