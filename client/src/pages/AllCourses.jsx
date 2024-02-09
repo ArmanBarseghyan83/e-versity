@@ -29,6 +29,8 @@ const AllCourses = () => {
     setSelectedValue({});
   };
 
+  refetch();
+
   if (loading) {
     return (
       <>
@@ -84,4 +86,5 @@ const AllCourses = () => {
 };
 
 export default AllCourses;
+
 
