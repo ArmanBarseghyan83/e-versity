@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+
 export const QUERY_ME = gql`
   query me {
     me {
@@ -7,7 +8,7 @@ export const QUERY_ME = gql`
       username
       isInstructor
       isAdmin
-      myLearnig {
+      myLearning {
         _id
         title
         images {
@@ -26,6 +27,7 @@ export const QUERY_ME = gql`
     }
   }
 `;
+
 export const ALL_USERS = gql`
   query users {
     users {
@@ -36,6 +38,7 @@ export const ALL_USERS = gql`
     }
   }
 `;
+
 export const APPROVED_COURSES = gql`
   query approvedCourses {
     approvedCourses {
@@ -52,6 +55,7 @@ export const APPROVED_COURSES = gql`
     }
   }
 `;
+
 export const MY_COURSES = gql`
   query myCourses {
     myCourses {
@@ -66,6 +70,7 @@ export const MY_COURSES = gql`
     }
   }
 `;
+
 export const ALL_COURSES = gql`
   query allCourses {
     allCourses {
@@ -82,6 +87,7 @@ export const ALL_COURSES = gql`
     }
   }
 `;
+
 export const COURSE = gql`
   query course($courseId: ID!) {
     course(courseId: $courseId) {
@@ -89,13 +95,16 @@ export const COURSE = gql`
       title
       description
       price
+      user {
+        username
+      }
       reviews {
         user {
           username
         }
         comment
         rating
-      }
+      } 
       images {
         filename
         url
@@ -103,45 +112,4 @@ export const COURSE = gql`
     }
   }
 `;
-
-export const COURSE_PAGE = gql`
-query coursePage($courseId: ID!) {
-  course(courseId: $courseId) {
-    user {
-      username
-    }
-    title
-    price
-    description
-    reviews {
-      user {
-        username
-      }
-      rating
-      comment
-    }
-    images {
-      url
-    }
-    
-  }
-}
-`;
-
-export const ALL_COURSES = gql`
-  query allCourses {
-    allCourses {
-      images {
-        url
-        filename
-      }
-      _id
-      title
-      isApproved
-      user {
-        username
-    }
-  }
-}
-`
 
