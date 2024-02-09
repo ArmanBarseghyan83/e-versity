@@ -102,6 +102,31 @@ export const COURSE = gql`
       }
     }
   }
+`;
+
+export const COURSE_PAGE = gql`
+query coursePage($courseId: ID!) {
+  course(courseId: $courseId) {
+    user {
+      username
+    }
+    title
+    price
+    description
+    reviews {
+      user {
+        username
+      }
+      rating
+      comment
+    }
+    images {
+      url
+    }
+    
+  }
+}
+`;
 
 export const ALL_COURSES = gql`
   query allCourses {
