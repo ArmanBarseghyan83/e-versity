@@ -5,7 +5,7 @@ const ImageCarousel = ({ images }) => {
       <Carousel  autoplay>
         {images?.map((image) => (
           <div  key={image.filename}>
-            <img src={image.url} style={{ width: '100%' }} />
+            <img key={image.id} src={image.url} style={{ width: '100%' }} />
           </div>
         ))}
       </Carousel>

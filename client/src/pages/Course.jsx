@@ -1,11 +1,12 @@
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { Rate, Form, Input, Button, Spin, Card, Row, Col } from 'antd';
+import { Rate, Form, Input, Button, Spin, Card, Row, Col, Layout } from 'antd';
 import { useQuery } from '@apollo/client';
-import { COURSE_PAGE } from './../utils/queries';
+import { COURSE_PAGE,  QUERY_ME } from './../utils/queries';
 import ImageCarousel from '../components/ImageCarousel';
+import LessonMenu from '../components/CourseLessonMenu';
 
-
+const { Sider, Content } = Layout;
 const { TextArea } = Input;
  
 
@@ -16,7 +17,6 @@ const Course = () => {
     variables: { courseId },
   });
 
-console.log(data?.course);
   if (loading) {
     return (
       <>
@@ -31,15 +31,26 @@ console.log(data?.course);
 
 
   return (
+  //  <Layout>
+  //   <Sider>
+  //     < LessonMenu />
+  //   </Sider>
+    <Layout>
+    <Content>
     <Card>
-      <Row>
+      <Row> 
         <Col style={{ padding: '0 1rem 1rem 1rem' }} span={24} md={12}>
           <h2 style={{ margin: '1rem 0' }}>{data?.course.title}</h2>
+          <h4 style={{ margin: '1rem 0' }}>Created By: {data?.course.user.username}</h4>
+          
+    
           <div>
             <Rate disabled allowHalf value='3.5' />{' '}
-            {data?.course?.reviews.length}
+            {data?.course?.reviews.length} {' '}
             reviews
           </div>
+          
+          
           <p style={{ margin: '1rem 0' }}>Price: ${data?.course.price}</p>
           <p>Description: {data?.course.description}</p>
           <div style={{ marginTop: '1rem' }}>
@@ -52,7 +63,6 @@ console.log(data?.course);
         </Col>
       </Row>
       <Row>
-        
          <Col style={{ padding: '1rem 1rem  0 1rem' }} span={24} md={12}>
           <h2 style={{ marginBottom: '1rem' }}>Write a Review</h2>
           <h2>** Form Goes Here **</h2>
@@ -74,6 +84,9 @@ console.log(data?.course);
         </Col>
       </Row>
     </Card>
+    </Content>
+    </Layout>
+  // </Layout>
   );
 };
 export default Course;

@@ -82,6 +82,7 @@ query coursePage($courseId: ID!) {
       username
     }
     title
+    price
     description
     reviews {
       user {
