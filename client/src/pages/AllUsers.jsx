@@ -24,11 +24,11 @@ const AllUsers = () => {
   const { userId } = useSelector((state) => state.auth);
 
   // Map over the users to create the data for the table
-  const tableData = data?.users.map((user) => ({
-    key: user._id,
-    username: user.username,
-    isAdmin: user.isAdmin,
-    isInstructor: user.isInstructor,
+  const tableData = data?.users?.map((user) => ({
+    key: user?._id,
+    username: user?.username,
+    isAdmin: user?.isAdmin,
+    isInstructor: user?.isInstructor,
   }));
 
   const deleteUserHandler = async (id) => {
@@ -67,7 +67,12 @@ const AllUsers = () => {
   return (
     <>
       <h2>All Users</h2>
-      <Table dataSource={tableData}>
+      <Table
+        dataSource={tableData}
+        pagination={{
+          pageSize: 6,
+        }}
+      >
         <Column title="Username" dataIndex="username" key="username" />
 
         <Column
@@ -79,12 +84,12 @@ const AllUsers = () => {
           key="admin"
           render={(record) => (
             <>
-              {record.key === userId ? (
+              {record?.key === userId ? (
                 <Button disabled>
                   {record?.isAdmin ? <CloseOutlined /> : <CheckOutlined />}
                 </Button>
               ) : (
-                <Button onClick={() => editAdminHandler(record.key)}>
+                <Button onClick={() => editAdminHandler(record?.key)}>
                   {record?.isAdmin ? <CloseOutlined /> : <CheckOutlined />}
                 </Button>
               )}
@@ -102,12 +107,12 @@ const AllUsers = () => {
           key="1nstructor"
           render={(record) => (
             <>
-              {record.key === userId ? (
+              {record?.key === userId ? (
                 <Button disabled>
                   {record?.isInstructor ? <CloseOutlined /> : <CheckOutlined />}
                 </Button>
               ) : (
-                <Button onClick={() => editInstructorHandler(record.key)}>
+                <Button onClick={() => editInstructorHandler(record?.key)}>
                   {record?.isInstructor ? <CloseOutlined /> : <CheckOutlined />}
                 </Button>
               )}
@@ -119,7 +124,7 @@ const AllUsers = () => {
           key="delete"
           render={(record) => (
             <>
-              {record.key === userId ? (
+              {record?.key === userId ? (
                 <Link role="button" disabled>
                   <DeleteFilled />
                 </Link>

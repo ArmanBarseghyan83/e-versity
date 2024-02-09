@@ -1,4 +1,4 @@
-import { Button, Form, Input, Spin } from 'antd';
+import { Button, Form, Input, Spin, Card } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useMutation } from '@apollo/client';
@@ -22,7 +22,7 @@ const Login = () => {
       });
 
       toast.success('Successfully logged in');
-      dispatch(setUserInfo(data.login.token));
+      dispatch(setUserInfo(data?.login?.token));
       navigate('/');
     } catch (err) {
       toast.error('No records found');
@@ -30,73 +30,78 @@ const Login = () => {
   };
 
   return (
-    <Form
-      name="basic"
-      labelCol={{
-        span: 4,
-      }}
+    <Card
       style={{
         maxWidth: 800,
         margin: 'auto',
         padding: '1rem',
       }}
-      onFinish={handleFormSubmit}
-      layout="vertical"
     >
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your email!',
-          },
-          {
-            type: 'email',
-            message: 'Please enter a valid email address!',
-          },
-        ]}
+      <Form
+        name="basic"
+        labelCol={{
+          span: 4,
+        }}
+        onFinish={handleFormSubmit}
+        layout="vertical"
       >
-        <Input />
-      </Form.Item>
+        <h2 style={{ fontSize: '1.7rem', marginBottom: '1rem' }}>Login</h2>
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your email!',
+            },
+            {
+              type: 'email',
+              message: 'Please enter a valid email address!',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
 
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your password!',
-          },
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password!',
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
 
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Submit
-          {loading && (
-            <Spin
-              indicator={
-                <LoadingOutlined
-                  style={{
-                    fontSize: 16,
-                    color: 'white',
-                    marginLeft: '.5rem',
-                  }}
-                  spin
-                />
-              }
-            />
-          )}
-        </Button>
-      </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+            {loading && (
+              <Spin
+                indicator={
+                  <LoadingOutlined
+                    style={{
+                      fontSize: 16,
+                      color: 'white',
+                      marginLeft: '.5rem',
+                    }}
+                    spin
+                  />
+                }
+              />
+            )}
+          </Button>
+        </Form.Item>
 
-      <div>
-        Or Signup <Link to={'/signup'}>here</Link>
-      </div>
-    </Form>
+        <div>
+          Or Signup <Link to={'/signup'}>here</Link>
+        </div>
+      </Form>
+    </Card>
   );
 };
 export default Login;
+
