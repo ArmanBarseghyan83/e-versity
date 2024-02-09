@@ -1,9 +1,11 @@
+import { useDispatch } from 'react-redux';
 import { useMutation, useQuery } from '@apollo/client';
 import { Table, Spin, Tag, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { DELETE_COURSE } from '../utils/mutations';
-import { MY_COURSES } from '../utils/queries';
+import { MY_COURSES, QUERY_ME } from '../utils/queries';
+import { removeFromCart } from '../slices/cartSlice';
 
 const { Column } = Table;
 
@@ -13,8 +15,10 @@ const MyCourses = () => {
   const [deleteCourse, { error: deleteError, loading: deleteLoading }] =
     useMutation(DELETE_COURSE);
 
+  const dispatch = useDispatch();
+
   // Map over the courses to create the data for the table
-  const tableData = data?.myCourses.map((item) => ({
+  const tableData = data?.myCourses?.map((item) => ({
     key: item?._id,
     title: <Link to={`/course/${item?._id}`}>{item?.title}</Link>,
     status: (
@@ -26,7 +30,7 @@ const MyCourses = () => {
         )}
       </>
     ),
-    price: <>${item?.price}</>,
+    price: <>$ {item?.price}</>,
     image: item?.images[0]?.url || '/sample.jpg',
   }));
 
@@ -34,8 +38,10 @@ const MyCourses = () => {
   const deleteCourseHandler = async (id) => {
     await deleteCourse({
       variables: { id },
+      refetchQueries: QUERY_ME,
     });
 
+    dispatch(removeFromCart(id));
     refetch();
   };
 
@@ -57,7 +63,12 @@ const MyCourses = () => {
   return (
     <>
       <h2>My Courses</h2>
-      <Table dataSource={tableData}>
+      <Table
+        dataSource={tableData}
+        pagination={{
+          pageSize: 6,
+        }}
+      >
         <Column
           title="Image"
           key="image"
