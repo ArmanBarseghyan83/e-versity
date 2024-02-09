@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client';
-
 export const QUERY_ME = gql`
   query me {
     me {
@@ -27,7 +26,6 @@ export const QUERY_ME = gql`
     }
   }
 `;
-
 export const ALL_USERS = gql`
   query users {
     users {
@@ -38,7 +36,22 @@ export const ALL_USERS = gql`
     }
   }
 `;
-
+export const APPROVED_COURSES = gql`
+  query approvedCourses {
+    approvedCourses {
+      _id
+      title
+      description
+      price
+      reviews {
+        rating
+      }
+      images {
+        url
+      }
+    }
+  }
+`;
 export const MY_COURSES = gql`
   query myCourses {
     myCourses {
@@ -53,10 +66,26 @@ export const MY_COURSES = gql`
     }
   }
 `;
-
+export const ALL_COURSES = gql`
+  query allCourses {
+    allCourses {
+      _id
+      title
+      isApproved
+      images {
+        filename
+        url
+      }
+      user {
+        username
+      }
+    }
+  }
+`;
 export const COURSE = gql`
   query course($courseId: ID!) {
     course(courseId: $courseId) {
+      _id
       title
       description
       price
@@ -66,7 +95,7 @@ export const COURSE = gql`
         }
         comment
         rating
-      } 
+      }
       images {
         filename
         url
@@ -98,3 +127,21 @@ query coursePage($courseId: ID!) {
   }
 }
 `;
+
+export const ALL_COURSES = gql`
+  query allCourses {
+    allCourses {
+      images {
+        url
+        filename
+      }
+      _id
+      title
+      isApproved
+      user {
+        username
+    }
+  }
+}
+`
+
