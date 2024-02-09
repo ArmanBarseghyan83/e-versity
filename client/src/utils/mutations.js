@@ -123,6 +123,7 @@ export const EDIT_COURSE = gql`
     }
   }
 `;
+
 export const APPROVE_COURSE = gql`
   mutation approveCourse($id: ID!) {
     approveCourse(_id: $id) {
@@ -140,3 +141,13 @@ export const CREATE_REVIEW = gql`
     }
   }
 `;
+
+
+export const APPROVE_COURSE = gql`
+  mutation approveCourse($id: ID!) {
+  approveCourse(_id: $id) {
+    isApproved
+  }
+}
+`
+
