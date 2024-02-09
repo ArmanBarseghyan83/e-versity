@@ -4,7 +4,7 @@ const typeDefs = `
     username: String
     email: String
     savedCourses: [Course]
-    myLearnig: [Course]
+    myLearning: [Course]
     isInstructor: Boolean
     isAdmin: Boolean
   }

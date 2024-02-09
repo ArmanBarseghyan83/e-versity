@@ -70,7 +70,6 @@ h4 span {
   background: #d4d4d4;
 }
 
-
 .ant-card-body p,
 td {
   max-width: 5rem;
@@ -93,7 +92,10 @@ td {
   }
 
   .sticky-menu {
-    font-size: .8rem;
+    font-size: 0.8rem;
+  }
+
+  main {
+    padding: 2rem 0.2rem 2rem 0.2rem;
   }
 }
-
