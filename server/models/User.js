@@ -32,7 +32,7 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Course',
     }],
-    myLearnig: [{
+    myLearning: [{
       type: Schema.Types.ObjectId,
       ref: 'Course',
     }],
@@ -62,4 +62,3 @@ userSchema.methods.isCorrectPassword = async function (password) {
 const User = model('User', userSchema);
 
 module.exports = User;
-

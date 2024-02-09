@@ -8,7 +8,7 @@ const resolvers = {
       if (context.user) {
         return User.findOne({ _id: context.user._id })
           .populate('savedCourses')
-          .populate('myLearnig');
+          .populate('myLearning');
       }
       throw new AuthenticationError('You need to be logged in!');
     },
@@ -20,18 +20,18 @@ const resolvers = {
     course: async (parent, { courseId }) => {
       return await Course.findById(courseId).populate('user').populate({
         path: 'reviews',
-        populate: 'user'
+        populate: 'user',
       });
     },
 
     approvedCourses: async () => {
-      return await Course.find({ isApproved: true }).populate('user');
+      return await Course.find({ isApproved: true })
+        .populate('user')
+        .sort({ updatedAt: -1, _id: 1 });
     },
 
     myCourses: async (parent, ags, context) => {
-      return await Course.find({ user: context.user._id })
-        .populate('user')
-        .sort({ updatedAt: -1, _id: 1 });
+      return await Course.find({ user: context.user._id }).populate('user');
     },
 
     allCourses: async () => {
@@ -116,13 +116,22 @@ const resolvers = {
     placeOrder: async (parent, { ids }, context) => {
       return await User.findOneAndUpdate(
         { _id: context.user._id },
-        { $addToSet: { myLearnig: ids } },
+        { $addToSet: { myLearning: ids } },
         { new: true }
       );
     },
 
     deleteCourse: async (parent, args, context) => {
       const course = await Course.findByIdAndDelete({ _id: args._id });
+      await User.findByIdAndUpdate(
+        { _id: context.user._id },
+        {
+          $pull: {
+            savedCourses: course._id,
+            myLearning: course._id,
+          },
+        }
+      );
       course?.images.forEach(async (image) => {
         await cloudinary.uploader.destroy(image?.filename);
       });
@@ -226,7 +235,7 @@ const resolvers = {
       course.reviews.push({ rating, comment, user: context.user._id });
       await course.save();
 
-      return course
+      return course;
     },
   },
 };
