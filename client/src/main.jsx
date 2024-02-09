@@ -16,12 +16,13 @@ import EditCourse from './pages/EditCourse.jsx';
 import AdminRoute from './components/AdminRoute.jsx';
 import InstructorRoute from './components/InstructorRoute.jsx';
 import AuthUserRoute from './components/AuthUserRoute.jsx';
+import Error from './pages/Error.jsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <h1 className="display-2">Wrong page!</h1>,
+    errorElement: <Error/>,
     children: [
       {
         index: true,

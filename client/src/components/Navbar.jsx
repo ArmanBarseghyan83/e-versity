@@ -12,6 +12,7 @@ import {
   ReadOutlined,
 } from '@ant-design/icons';
 import { removeUserInfo } from '../slices/authSlice';
+import { clearCart } from '../slices/cartSlice';
 import { Menu, Badge } from 'antd';
 import { QUERY_ME } from '../utils/queries';
 
@@ -21,6 +22,7 @@ const Navbar = () => {
 
   // Get the items from the global state
   const { isTokenExpired, userId } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   const [current, setCurrent] = useState('mail');
@@ -28,6 +30,34 @@ const Navbar = () => {
   const onClick = (e) => {
     setCurrent(e.key);
   };
+
+  // Links for the Saved section on the navbar
+  const savedChildren = data?.me?.savedCourses.map((course) => ({
+    label: (
+      <Link to={`/course/${course._id}`} rel="noopener noreferrer">
+        <img
+          style={{ width: '2.5rem', marginRight: '1rem' }}
+          src={course?.images[0]?.url}
+        />
+        {course?.title}
+      </Link>
+    ),
+    key: course?._id,
+  }));
+
+  // Links for the MyLearning section on the navbar
+  const myLearningChildren = data?.me?.myLearning.map((course) => ({
+    label: (
+      <Link to={`/course/${course?._id}`} rel="noopener noreferrer">
+        <img
+          style={{ width: '2.5rem', marginRight: '1rem' }}
+          src={course?.images[0].url}
+        />
+        {course?.title}
+      </Link>
+    ),
+    key: course?._id + '1',
+  }));
 
   // Render this links only if the user is admin
   const adminUserNav = data?.me?.isAdmin
@@ -80,95 +110,39 @@ const Navbar = () => {
           label: 'Saved',
           key: 'SubMenu1',
           icon: (
-            <Badge count={5} offset={[6, -4]} size="small">
+            <Badge count={savedChildren?.length} offset={[6, -4]} size="small">
               <HeartOutlined />
             </Badge>
           ),
-          children: [
-            {
-              label: (
-                <Link to="" rel="noopener noreferrer">
-                  <img
-                    style={{ width: '2.5rem', marginRight: '1rem' }}
-                    src={'/sample.jpg'}
-                  />
-                  Title 1
-                </Link>
-              ),
-              key: '1',
-            },
-            {
-              label: (
-                <Link to="" rel="noopener noreferrer">
-                  <img
-                    style={{ width: '2.5rem', marginRight: '1rem' }}
-                    src={'/sample.jpg'}
-                  />
-                  Title 2
-                </Link>
-              ),
-              key: '2',
-            },
-            {
-              label: (
-                <Link to="" rel="noopener noreferrer">
-                  <img
-                    style={{ width: '2.5rem', marginRight: '1rem' }}
-                    src={'/sample.jpg'}
-                  />
-                  Title 3
-                </Link>
-              ),
-              key: '3',
-            },
-          ],
+          children: savedChildren?.length
+            ? savedChildren
+            : [
+                {
+                  label: 'No Data',
+                  key: 'saved',
+                },
+              ],
         },
         {
           label: 'My Learning',
           key: 'SubMenu2',
           icon: (
-            <Badge count={7} offset={[6, -4]} size="small">
+            <Badge
+              count={myLearningChildren?.length}
+              offset={[6, -4]}
+              size="small"
+            >
               <ReadOutlined />
             </Badge>
           ),
-          children: [
-            {
-              label: (
-                <Link to="" rel="noopener noreferrer">
-                  <img
-                    style={{ width: '2.5rem', marginRight: '1rem' }}
-                    src={'/sample.jpg'}
-                  />
-                  Title 1
-                </Link>
-              ),
-              key: '11',
-            },
-            {
-              label: (
-                <Link to="" rel="noopener noreferrer">
-                  <img
-                    style={{ width: '2.5rem', marginRight: '1rem' }}
-                    src={'/sample.jpg'}
-                  />
-                  Title 2
-                </Link>
-              ),
-              key: '22',
-            },
-            {
-              label: (
-                <Link to="" rel="noopener noreferrer">
-                  <img
-                    style={{ width: '2.5rem', marginRight: '1rem' }}
-                    src={'/sample.jpg'}
-                  />
-                  Title 3
-                </Link>
-              ),
-              key: '33',
-            },
-          ],
+          children: myLearningChildren?.length
+            ? myLearningChildren
+            : [
+                {
+                  label: 'No Data',
+                  key: 'myLearning',
+                },
+              ],
         },
         {
           label: 'Settings',
@@ -195,7 +169,7 @@ const Navbar = () => {
           ),
           key: 'cart',
           icon: (
-            <Badge count={3} offset={[6, -4]} size="small">
+            <Badge count={cartItems?.length} offset={[6, -4]} size="small">
               <ShoppingCartOutlined />
             </Badge>
           ),
@@ -223,6 +197,7 @@ const Navbar = () => {
         <Link
           onClick={() => {
             dispatch(removeUserInfo());
+            dispatch(clearCart());
           }}
           role="button"
           rel="noopener noreferrer"
@@ -239,6 +214,7 @@ const Navbar = () => {
   useEffect(() => {
     if (isTokenExpired) {
       localStorage.removeItem('id_token');
+      refetch();
     }
   }, [isTokenExpired]);
 
@@ -251,7 +227,7 @@ const Navbar = () => {
       selectedKeys={[current]}
       mode="horizontal"
       items={items}
-      style={{ padding: '1rem', fontSize: '1rem' }}
+      className="sticky-menu"
     />
   );
 };

@@ -6,15 +6,94 @@
 
 body {
   font-family: 'Rubik', sans-serif;
-  background-color: rgb(196, 204, 209);
-}
-
-.small {
-  font-weight: 300;
-  font-style: italic;
+  background-color: #d3dbe0;
 }
 
 main {
   padding: 2rem;
+}
+
+main > h2 {
+  margin-bottom: 1rem;
+}
+
+h2,
+h3,
+p,
+div > b,
+h4 span {
+  color: #506574;
+}
+
+.sticky-menu {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.courseItem-icon-buttons {
+  color: #0290ee;
+  font-size: 2rem;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.course-icon-buttons {
+  color: #0290ee;
+  font-size: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.course-icon-buttons svg:hover,
+.courseItem-icon-buttons svg:hover {
+  color: #44b1fa;
+}
+
+.commentlist {
+  max-height: 20rem;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+::-webkit-scrollbar-track {
+  background: #f3f3f3;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+}
+
+
+.ant-card-body p,
+td {
+  max-width: 5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ant-card-body p {
+  max-width: 13rem;
+}
+
+.ant-menu li {
+  max-width: 10rem;
+}
+
+@media screen and (max-width: 540px) {
+  .small-screen {
+    display: none;
+  }
+
+  .sticky-menu {
+    font-size: .8rem;
+  }
 }
 
