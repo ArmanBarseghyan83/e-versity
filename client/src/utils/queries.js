@@ -74,3 +74,20 @@ export const COURSE = gql`
     }
   }
 `;
+
+export const ALL_COURSES = gql`
+  query allCourses {
+    allCourses {
+      images {
+        url
+        filename
+      }
+      _id
+      title
+      isApproved
+      user {
+        username
+    }
+  }
+}
+`
