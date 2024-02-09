@@ -1,33 +1,50 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
-import { List, Avatar, Space } from 'antd';
-import { COURSE } from '../utils/queries'; 
+import { Avatar, List, Rate } from 'antd';
 
-const CommentList = () => {
-  const { loading, error, data } = useQuery(COURSE);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-
-  const comments = data?.me?.savedCourses || [];
+// Unordered list items to show users comments and ratings.
+const CommentList = ({ reviews }) => {
+  const data = reviews
+    ?.map((review) => ({
+      user: (
+        <>
+          <span style={{ fontSize: '1rem', marginRight: '1rem' }}>
+            {review?.user?.username}
+          </span>
+          <Rate
+            style={{ fontSize: '1rem' }}
+            allowHalf
+            disabled
+            value={review?.rating}
+          />
+        </>
+      ),
+      description: review?.comment,
+      rating: review?.rating,
+    }))
+    .reverse();
 
   return (
-    <Space direction="vertical" style={{ marginBottom: '20px' }} size="middle">
-      {/* Add the pagination controls here if needed */}
+    <>
+      <h3 style={{fontSize: '1.2rem'}}>Reviews</h3>
       <List
+        className='commentlist'
         itemLayout="horizontal"
-        dataSource={comments}
-        renderItem={(comment) => (
+        dataSource={data}
+        renderItem={(item, index) => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar src={comment.images[0]?.url} />}
-              title={<a href="https://ant.design">{comment.title}</a>}
-              description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+              avatar={
+                <Avatar
+                  src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
+                />
+              }
+              title={item?.user}
+              description={item?.description}
             />
           </List.Item>
         )}
       />
-    </Space>
+    </>
   );
 };
 
