@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Button, Form, Input, InputNumber, Row, Spin } from 'antd';
+import { Button, Form, Input, InputNumber, Row, Spin, Card } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { EDIT_COURSE } from '../utils/mutations';
@@ -36,7 +36,7 @@ const EditCourse = () => {
     // Get the data from file upload and save to the new FormData object
     const formData = new FormData();
 
-    for (let i = 0; i < images.length; i++) {
+    for (let i = 0; i < images?.length; i++) {
       formData.append('images', images[i]);
     }
 
@@ -55,7 +55,7 @@ const EditCourse = () => {
       const imageData = await res.json();
 
       // Throw an error if the image is not uploaded
-      if (!imageData.images) {
+      if (!imageData?.images) {
         throw new Error('Image size exceeds the limit');
       }
 
@@ -72,7 +72,7 @@ const EditCourse = () => {
       refetch();
       navigate('/my-courses');
     } catch (err) {
-      toast.error(err?.message || 'Something went wrong');
+      toast.error('Something went wrong');
     }
   };
 
@@ -90,26 +90,29 @@ const EditCourse = () => {
   }
 
   return (
-    <>
-      <h2>Edit Course</h2>
+    <Card
+      style={{
+        maxWidth: 900,
+        margin: 'auto',
+        padding: '1rem',
+      }}
+    >
       <Form
         name="basic"
         labelCol={{
           span: 4,
         }}
-        style={{
-          maxWidth: 800,
-          margin: 'auto',
-          padding: '1rem',
-        }}
         onFinish={handleFormSubmit}
         initialValues={{
-          title: data?.course.title,
+          title: data?.course?.title,
           description: data?.course.description,
-          price: data?.course.price,
+          price: data?.course?.price,
         }}
         layout="vertical"
       >
+        <h2 style={{ fontSize: '1.7rem', marginBottom: '1rem' }}>
+          Edit Course
+        </h2>
         <Form.Item
           label="Title"
           name="title"
@@ -156,11 +159,11 @@ const EditCourse = () => {
         <div style={{ marginBottom: '1rem' }}>Select images to delete</div>
         <Row>
           {data?.course?.images.map((image, i) => (
-            <div key={image.filename}>
+            <div key={image?.filename}>
               <input
                 id={i}
                 type="checkbox"
-                value={image.filename}
+                value={image?.filename}
                 onChange={handleCheckboxChange}
                 style={{ position: 'absolute' }}
               />
@@ -168,7 +171,10 @@ const EditCourse = () => {
                 style={{ cursor: 'pointer', marginRight: '.5rem' }}
                 htmlFor={i}
               >
-                <img src={image?.url || ''} style={{ width: '6rem' }} />
+                <img
+                  src={image?.url}
+                  style={{ width: '6rem', border: '#506574 solid .5px' }}
+                />
               </label>
             </div>
           ))}
@@ -193,7 +199,7 @@ const EditCourse = () => {
           </Button>
         </Form.Item>
       </Form>
-    </>
+    </Card>
   );
 };
 

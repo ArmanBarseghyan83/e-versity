@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Form, Input, InputNumber, Spin } from 'antd';
+import { Button, Form, Input, InputNumber, Spin, Card } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { ADD_COURSE } from '../utils/mutations';
@@ -37,7 +37,7 @@ const CreateCourse = () => {
       const imageData = await res.json();
 
       // Throw an error if the image is not uploaded
-      if (!imageData.images) {
+      if (!imageData?.images) {
         throw new Error('Image size exceeds the limit');
       }
 
@@ -53,21 +53,24 @@ const CreateCourse = () => {
   };
 
   return (
-    <>
-      <h2>Create Course</h2>
+    <Card
+      style={{
+        maxWidth: 900,
+        margin: 'auto',
+        padding: '1rem',
+      }}
+    >
       <Form
         name="basic"
         labelCol={{
           span: 4,
         }}
-        style={{
-          maxWidth: 800,
-          margin: 'auto',
-          padding: '1rem',
-        }}
         onFinish={handleFormSubmit}
         layout="vertical"
       >
+        <h2 style={{ fontSize: '1.7rem', marginBottom: '1rem' }}>
+          Create Course
+        </h2>
         <Form.Item
           label="Title"
           name="title"
@@ -132,7 +135,7 @@ const CreateCourse = () => {
           </Button>
         </Form.Item>
       </Form>
-    </>
+    </Card>
   );
 };
 
