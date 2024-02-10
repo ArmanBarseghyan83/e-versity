@@ -27,7 +27,7 @@ const Cart = () => {
   }));
 
   // Calculate the total price of the cart items
-  const totalPrice = cartItems.reduce((acc, curr) => acc + curr.price, 0);
+  const totalPrice = cartItems.reduce((acc, curr) => acc + curr.price, 0).toFixed(2)
 
   const ids = cartItems.map((item) => item._id);
 
