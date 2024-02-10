@@ -34,6 +34,7 @@ const typeDefs = `
     user: User
     rating: Float
     comment: String
+    createdAt: String
   }
 
   type Course {

@@ -2,7 +2,8 @@ import React from 'react';
 import { Avatar, List, Rate } from 'antd';
 
 // Unordered list items to show users comments and ratings.
-const CommentList = ({ reviews }) => {
+const CommentList = ({ reviews, formatDate }) => {
+  
   const data = reviews
     ?.map((review) => ({
       user: (
@@ -16,6 +17,9 @@ const CommentList = ({ reviews }) => {
             disabled
             value={review?.rating}
           />
+          <p style={{ fontWeight: '400', fontStyle: 'italic' }}>
+            {formatDate(+review?.createdAt)}
+          </p>
         </>
       ),
       description: review?.comment,
@@ -25,9 +29,9 @@ const CommentList = ({ reviews }) => {
 
   return (
     <>
-      <h3 style={{fontSize: '1.2rem'}}>Reviews</h3>
+      <h3 style={{ fontSize: '1.2rem' }}>Reviews</h3>
       <List
-        className='commentlist'
+        className="commentlist"
         itemLayout="horizontal"
         dataSource={data}
         renderItem={(item, index) => (

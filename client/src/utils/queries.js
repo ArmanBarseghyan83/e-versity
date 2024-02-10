@@ -99,17 +99,18 @@ export const COURSE = gql`
         username
       }
       reviews {
+        createdAt
         user {
           username
         }
         comment
         rating
-      } 
+      }
       images {
         filename
         url
       }
+      updatedAt
     }
   }
 `;
-

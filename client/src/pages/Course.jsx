@@ -11,6 +11,12 @@ import { LoadingOutlined } from '@ant-design/icons';
 import SaveCartButtons from '../components/SaveCartButtons';
 
 const Course = () => {
+  const formatDate = (date) => {
+    return `${new Date(date).getMonth() + 1}/${new Date(
+      date
+    ).getDate()}/${new Date(date).getFullYear()}`;
+  };
+
   // Get course id from the url
   const courseId = useParams().id;
 
@@ -71,7 +77,7 @@ const Course = () => {
   return (
     <Card>
       <Row>
-        <Col span={24} md={14}>
+        <Col style={{ padding: '.5rem' }} span={24} md={14}>
           <h2 style={{ marginBottom: '1rem' }}>{data?.course.title}</h2>
           <div>
             <Rate disabled allowHalf value={avgRating} />{' '}
@@ -83,6 +89,9 @@ const Course = () => {
           </div>
           <div style={{ margin: '.5rem 0' }}>
             Price: <b>$ {data?.course?.price}</b>
+          </div>
+          <div style={{ margin: '.5rem 0' }}>
+            Last updated: <b> {formatDate(+data?.course?.updatedAt)}</b>
           </div>
           <div>Description: {data?.course?.description}</div>
           <div style={{ marginTop: '1rem' }}>
@@ -109,7 +118,7 @@ const Course = () => {
           dataMe?.me?.myLearning.some(
             (obj) => obj._id === data?.course._id
           ) && (
-            <Col span={24} md={12}>
+            <Col style={{ padding: '.5rem' }} span={24} md={12}>
               <h3 style={{ marginBottom: '1rem', fontSize: '1.2rem' }}>
                 Write a Review
               </h3>
@@ -174,8 +183,12 @@ const Course = () => {
               </Form>
             </Col>
           )}
-        <Col span={24} md={12}>
-          <CommentList reviews={data?.course?.reviews} loaidng={loading} />
+        <Col style={{ padding: '.5rem' }} span={24} md={12}>
+          <CommentList
+            reviews={data?.course?.reviews}
+            loaidng={loading}
+            formatDate={formatDate}
+          />
         </Col>
       </Row>
     </Card>
