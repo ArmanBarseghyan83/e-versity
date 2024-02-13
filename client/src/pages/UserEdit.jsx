@@ -20,6 +20,7 @@ const UserEdit = () => {
         const { data } = await editUser({
           variables: { ...values },
         });
+        toast.success('Successfully edited')
         refetch();
         navigate('/');
       } catch (err) {
@@ -119,6 +120,9 @@ const UserEdit = () => {
                 }
               />
             )}
+          </Button>
+          <Button onClick={() => {navigate('/')}} style={{marginLeft: 10}}>
+            Cancel
           </Button>
         </Form.Item>
       </Form>
