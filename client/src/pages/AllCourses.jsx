@@ -29,8 +29,6 @@ const AllCourses = () => {
     setSelectedValue({});
   };
 
-  refetch();
-
   if (loading) {
     return (
       <>
@@ -46,7 +44,11 @@ const AllCourses = () => {
   return (
     <>
       <h2>All Courses</h2>
-      <Table dataSource={tableData}>
+      <Table
+        dataSource={tableData}
+        pagination={{
+          pageSize: 6,
+        }}>
         <Column
           title="Image"
           key="image"
@@ -86,5 +88,4 @@ const AllCourses = () => {
 };
 
 export default AllCourses;
-
 
