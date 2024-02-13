@@ -197,6 +197,9 @@ const EditCourse = () => {
               />
             )}
           </Button>
+          <Button style={{marginLeft: 10}} onClick={() => { navigate('/my-courses'); }} >
+            Cancel
+          </Button>
         </Form.Item>
       </Form>
     </Card>
