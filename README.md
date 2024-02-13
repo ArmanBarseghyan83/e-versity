@@ -70,19 +70,25 @@ This project is an online university system that offers classes to users. It pro
 
 ## Screenshots
 **Homepage**
-![homepage](/client/public/screenshots/homepage.png)
+  - ![homepage](/client/public/screenshots/homepage.png)
+
 **View all approved and available courses**
-![allCourses](/client/public/screenshots/allCourses.png)
+  - ![allCourses](/client/public/screenshots/allCourses.png)
+
 **Approve or reject submitted courses**
-![approveCourse](/client/public/screenshots/approveCourse.png)
+  - ![approveCourse](/client/public/screenshots/approveCourse.png)
+
 **Course details page**
-![coursePage](/client/public/screenshots/coursePage.png)
+  - ![coursePage](/client/public/screenshots/coursePage.png)
+
 **User comments on specific course**
-![userComment](/client/public/screenshots/userComment.png)
+  - ![userComment](/client/public/screenshots/userComment.png)
+
 **Functional shopping cart**
-![functionalCart](/client/public/screenshots/functionalCart.png)
+  - ![functionalCart](/client/public/screenshots/functionalCart.png)
+
 **View all users**
-![viewAllUsers](/client/public/screenshots/viewAllUsers.png)
+  - ![viewAllUsers](/client/public/screenshots/viewAllUsers.png)
 
 ## License
 
