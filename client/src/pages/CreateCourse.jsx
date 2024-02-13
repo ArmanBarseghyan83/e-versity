@@ -133,6 +133,9 @@ const CreateCourse = () => {
               />
             )}
           </Button>
+          <Button style={{marginLeft: 10}} onClick={() => { navigate('/'); }} >
+            Cancel
+          </Button>
         </Form.Item>
       </Form>
     </Card>
