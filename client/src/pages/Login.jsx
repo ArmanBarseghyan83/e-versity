@@ -14,6 +14,20 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const checkoutAdminHandler = async () => {
+    try {
+      const { data } = await login({
+        variables: { email: 'armanbarseghyan83@gmail.com', password: '123456' },
+      });
+
+      toast.success('Successfully logged in');
+      dispatch(setUserInfo(data?.login?.token));
+      navigate('/');
+    } catch (err) {
+      toast.error('No records found');
+    }
+  };
+
   // Login the user
   const handleFormSubmit = async (values) => {
     try {
@@ -96,12 +110,22 @@ const Login = () => {
           </Button>
         </Form.Item>
 
+        <div style={{ marginBottom: '1rem' }}>
+          Or check out my
+          <Button
+            onClick={checkoutAdminHandler}
+            style={{ marginLeft: '.6rem' }}
+            type="default"
+          >
+            admin account
+          </Button>
+        </div>
+
         <div>
-          Or Signup <Link to={'/signup'}>here</Link>
+          Sign Up Instead <Link to={'/signup'}>here</Link>
         </div>
       </Form>
     </Card>
   );
 };
 export default Login;
-

@@ -109,7 +109,7 @@ const Signup = () => {
           </Button>
         </Form.Item>
         <div>
-          Or Login <Link to={'/login'}>here</Link>
+          Login Instead <Link to={'/login'}>here</Link>
         </div>
       </Form>
     </Card>
